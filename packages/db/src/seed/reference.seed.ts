@@ -16,7 +16,7 @@ export async function seedReferenceData() {
         category,
         description: "Default category",
         amount: "0",
-        expenseDate: new Date(),
+        expenseDate: new Date().toISOString().slice(0,10),
         createdBy: "00000000-0000-0000-0000-000000000000"
       })
       .onConflictDoNothing();
