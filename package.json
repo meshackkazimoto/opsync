@@ -1,0 +1,21 @@
+{
+  "name": "opsync",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun run --filter api dev",
+    "build": "bun run --workspaces build",
+    "lint": "bun run --workspaces lint"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
