@@ -1,4 +1,5 @@
 import { pgTable, uuid, varchar, date } from "drizzle-orm/pg-core";
+import { employeeStatusEnum } from "./enums";
 
 export const employees = pgTable("employees", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -7,5 +8,5 @@ export const employees = pgTable("employees", {
   department: varchar("department", { length: 100 }),
   position: varchar("position", { length: 100 }),
   employmentDate: date("employment_date"),
-  status: varchar("status", { length: 20 })
+  status: employeeStatusEnum("status").default("ACTIVE"),
 });
