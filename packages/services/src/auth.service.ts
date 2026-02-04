@@ -3,16 +3,17 @@ import { UnknownException } from "effect/Cause";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import { UserRepository } from "@opsync/repositories";
+import { RefreshTokenRepository, UserRepository } from "@opsync/repositories";
 import { RBACService } from "./rbac.service";
 import type { Role } from "./rbac.service";
 
 export type AuthResult = {
-    userId: string;
-    email: string;
-    roles: Role[];
-    permissions: string[];
-    accessToken: string;
+  userId: string;
+  email: string;
+  roles: Role[];
+  permissions: string[];
+  accessToken: string;
+  refreshToken: string;
 };
 
 export interface AuthService {
@@ -27,7 +28,8 @@ export const AuthService = Context.GenericTag<AuthService>("AuthService");
 export const AuthServiceLive = Layer.effect(
     AuthService,
     Effect.gen(function* () {
-        const userRepo = yield* UserRepository;
+      const userRepo = yield* UserRepository;
+      const refreshTokenRepo = yield* RefreshTokenRepository;
         const rbac = yield* RBACService;
 
         return AuthService.of({
@@ -72,14 +74,27 @@ export const AuthServiceLive = Layer.effect(
                   catch: (err) => new UnknownException(err),
               });
 
-              return {
-                  userId: user.id,
-                  email: user.email,
-                  roles,
-                  permissions,
-                  accessToken: token,
-              };
-          });
+            const refreshToken = crypto.randomUUID();
+            const expiresAt = new Date();
+            expiresAt.setDate(expiresAt.getDate() + 14);
+
+            yield* refreshTokenRepo.save({
+            userId: user.id,
+            token: refreshToken,
+            expiresAt,
+          }).pipe(
+            Effect.mapError((err) => new UnknownException(err))
+          );
+
+          return {
+                userId: user.id,
+                email: user.email,
+                roles,
+                permissions,
+            accessToken: token,
+            refreshToken,
+            };
+        });
       },
 
         });

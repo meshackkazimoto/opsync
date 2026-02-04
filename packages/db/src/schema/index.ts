@@ -18,4 +18,6 @@ export * from "./assets";
 export * from "./documents";
 export * from "./audit_logs";
 
+export * from "./refresh_tokens";
+
 export * from "./relations";

@@ -4,31 +4,49 @@ import type { Context as HonoContext } from "hono";
 import {
   AuthServiceLive,
   RBACServiceLive,
+  TokenServiceLive,
 } from "@opsync/services";
-import type { AuthService, RBACService } from "@opsync/services";
+import type { AuthService, RBACService, TokenService } from "@opsync/services";
 
 import {
+  EmployeeRepositoryLive,
+  RefreshTokenRepositoryLive,
   UserRepositoryLive,
 } from "@opsync/repositories";
-import type { UserRepository } from "@opsync/repositories";
+import type {
+  EmployeeRepository,
+  RefreshTokenRepository,
+  UserRepository,
+} from "@opsync/repositories";
 
 const BaseLayer = Layer.mergeAll(
   UserRepositoryLive,
-  RBACServiceLive
+  RBACServiceLive,
+  RefreshTokenRepositoryLive
+);
+
+const RepositoryLayer = Layer.mergeAll(
+  BaseLayer,
+  EmployeeRepositoryLive
 );
 
 const AppLayer = Layer.mergeAll(
-  BaseLayer,
-  Layer.provide(AuthServiceLive, BaseLayer)
+  RepositoryLayer,
+  Layer.provide(AuthServiceLive, BaseLayer),
+  Layer.provide(TokenServiceLive, BaseLayer)
 );
 
-export async function runEffect<A>(
+type AppContext =
+  | UserRepository
+  | RBACService
+  | AuthService
+  | EmployeeRepository
+  | RefreshTokenRepository
+  | TokenService;
+
+export async function runEffect<A, E>(
   c: HonoContext,
-  effect: Effect.Effect<
-    unknown,
-    unknown,
-    A & (UserRepository | RBACService | AuthService)
-  >
+  effect: Effect.Effect<A, E, AppContext>
 ) {
   const exit = await Effect.runPromiseExit(
     Effect.provide(effect, AppLayer)
