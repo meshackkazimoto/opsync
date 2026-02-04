@@ -22,9 +22,6 @@ const AppLayer = Layer.mergeAll(
   Layer.provide(AuthServiceLive, BaseLayer)
 );
 
-/**
- * Runs an Effect and converts it into an HTTP response
- */
 export async function runEffect<A>(
   c: HonoContext,
   effect: Effect.Effect<

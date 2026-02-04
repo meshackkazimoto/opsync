@@ -1,10 +1,8 @@
 import { Hono } from "hono";
-import { meRoute } from "./routes/me.route";
-import authRoute from "./routes/auth.route";
+import { v1Routes } from "./api/v1";
 
 const app = new Hono();
 
-app.route("/auth", authRoute);
-app.route("/", meRoute);
+app.route("/api/v1", v1Routes);
 
 export default app;
