@@ -19,7 +19,7 @@ export interface AuthService {
     login(
         email: string,
         password: string
-    ): Effect.Effect<AuthResult, UnknownException, UserRepository | RBACService>;
+    ): Effect.Effect<AuthResult, UnknownException, never>;
 }
 
 export const AuthService = Context.GenericTag<AuthService>("AuthService");

@@ -1,4 +1,4 @@
-import { Context, Effect } from "effect";
+import { Context, Effect, Layer } from "effect";
 import { db } from "@opsync/db";
 import { purchases } from "@opsync/db/schema";
 import { UnknownException } from "effect/Cause";
@@ -16,16 +16,19 @@ export interface PurchaseRepository {
 export const PurchaseRepository =
   Context.GenericTag<PurchaseRepository>("PurchaseRepository");
 
-export const PurchaseRepositoryLive = Effect.succeed<PurchaseRepository>({
-  list() {
-    return Effect.tryPromise(async () => {
-      return await db.select().from(purchases);
-    });
-  },
+export const PurchaseRepositoryLive = Layer.succeed(
+  PurchaseRepository,
+  PurchaseRepository.of({
+    list() {
+      return Effect.tryPromise(async () => {
+        return await db.select().from(purchases);
+      });
+    },
 
-  create(data: any) {
-    return Effect.tryPromise(async () => {
-      await db.insert(purchases).values(data);
-    });
-  },
-});
+    create(data: any) {
+      return Effect.tryPromise(async () => {
+        await db.insert(purchases).values(data);
+      });
+    },
+  })
+);

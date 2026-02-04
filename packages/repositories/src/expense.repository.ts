@@ -1,4 +1,4 @@
-import { Context, Effect } from "effect";
+import { Context, Effect, Layer } from "effect";
 import { db } from "@opsync/db";
 import { expenses } from "@opsync/db/schema";
 import { UnknownException } from "effect/Cause";
@@ -29,19 +29,22 @@ export interface ExpenseRepository {
 export const ExpenseRepository =
   Context.GenericTag<ExpenseRepository>("ExpenseRepository");
 
-export const ExpenseRepositoryLive = Effect.succeed<ExpenseRepository>({
-  create(data) {
-    return Effect.tryPromise(async () => {
-      await db.insert(expenses).values(data);
-    });
-  },
+export const ExpenseRepositoryLive = Layer.succeed(
+  ExpenseRepository,
+  ExpenseRepository.of({
+    create(data) {
+      return Effect.tryPromise(async () => {
+        await db.insert(expenses).values(data);
+      });
+    },
 
-  listByDateRange(from, to) {
-    return Effect.tryPromise(async () => {
-      return await db
-        .select()
-        .from(expenses)
-        .where(between(expenses.expenseDate, from, to));
-    });
-  },
-});
+    listByDateRange(from, to) {
+      return Effect.tryPromise(async () => {
+        return await db
+          .select()
+          .from(expenses)
+          .where(between(expenses.expenseDate, from, to));
+      });
+    },
+  })
+);

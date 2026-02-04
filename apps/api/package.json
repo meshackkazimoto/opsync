@@ -1,0 +1,26 @@
+{
+  "name": "@opsync/api",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --watch src/server.ts",
+    "start": "bun run src/server.ts",
+    "build": "bun build src/server.ts --outdir dist",
+    "lint": "echo \"no lint yet\""
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@opsync/repositories": "workspace:*",
+    "@opsync/services": "workspace:*",
+    "@types/jsonwebtoken": "^9.0.10",
+    "effect": "^3.19.15",
+    "hono": "^4.11.7",
+    "jsonwebtoken": "^9.0.3"
+  }
+}

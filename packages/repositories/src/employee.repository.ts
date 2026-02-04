@@ -1,4 +1,4 @@
-import { Context, Effect } from "effect";
+import { Context, Effect, Layer } from "effect";
 import { db } from "@opsync/db";
 import { employees } from "@opsync/db/schema";
 import { UnknownException } from "effect/Cause";
@@ -25,16 +25,19 @@ export interface EmployeeRepository {
 export const EmployeeRepository =
   Context.GenericTag<EmployeeRepository>("EmployeeRepository");
 
-export const EmployeeRepositoryLive = Effect.succeed<EmployeeRepository>({
-  list() {
-    return Effect.tryPromise(async () => {
-      return await db.select().from(employees);
-    });
-  },
+export const EmployeeRepositoryLive = Layer.succeed(
+  EmployeeRepository,
+  EmployeeRepository.of({
+    list() {
+      return Effect.tryPromise(async () => {
+        return await db.select().from(employees);
+      });
+    },
 
-  create(data) {
-    return Effect.tryPromise(async () => {
-      await db.insert(employees).values(data);
-    });
-  },
-});
+    create(data) {
+      return Effect.tryPromise(async () => {
+        await db.insert(employees).values(data);
+      });
+    },
+  })
+);

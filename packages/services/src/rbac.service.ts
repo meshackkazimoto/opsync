@@ -1,4 +1,4 @@
-import { Context, Effect } from "effect";
+import { Context, Effect, Layer } from "effect";
 
 export type Role =
   | "ADMIN"
@@ -46,22 +46,25 @@ export interface RBACService {
 export const RBACService =
   Context.GenericTag<RBACService>("RBACService");
 
-export const RBACServiceLive = Effect.succeed<RBACService>({
-  permissionsForRoles(roles) {
-    return Effect.succeed(
-      Array.from(
-        new Set(
-          roles.flatMap((role) => ROLE_PERMISSIONS[role] ?? [])
+export const RBACServiceLive = Layer.succeed(
+  RBACService,
+  RBACService.of({
+    permissionsForRoles(roles) {
+      return Effect.succeed(
+        Array.from(
+          new Set(
+            roles.flatMap((role) => ROLE_PERMISSIONS[role] ?? [])
+          )
         )
-      )
-    );
-  },
+      );
+    },
 
-  hasPermission(roles, permission) {
-    return Effect.succeed(
-      roles.some((role) =>
-        ROLE_PERMISSIONS[role]?.includes(permission)
-      )
-    );
-  },
-});
+    hasPermission(roles, permission) {
+      return Effect.succeed(
+        roles.some((role) =>
+          ROLE_PERMISSIONS[role]?.includes(permission)
+        )
+      );
+    },
+  })
+);
