@@ -1,0 +1,31 @@
+import { Context, Effect } from "effect";
+import { db } from "@opsync/db";
+import { purchases } from "@opsync/db/schema";
+import { UnknownException } from "effect/Cause";
+
+export interface PurchaseRepository {
+  list(): Effect.Effect<any[], unknown, never>;
+
+  create(data: {
+    supplierId: string;
+    amount: string;
+    status: string;
+  }): Effect.Effect<void, UnknownException, never>;
+}
+
+export const PurchaseRepository =
+  Context.Tag<"PurchaseRepository">("PurchaseRepository");
+
+export const PurchaseRepositoryLive = Effect.succeed<PurchaseRepository>({
+  list() {
+    return Effect.tryPromise(async () => {
+      return await db.select().from(purchases);
+    });
+  },
+
+  create(data: any) {
+    return Effect.tryPromise(async () => {
+      await db.insert(purchases).values(data);
+    });
+  },
+});
