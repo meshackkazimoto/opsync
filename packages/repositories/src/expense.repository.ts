@@ -27,7 +27,7 @@ export interface ExpenseRepository {
 }
 
 export const ExpenseRepository =
-  Context.Tag<"ExpenseRepository">("ExpenseRepository");
+  Context.GenericTag<ExpenseRepository>("ExpenseRepository");
 
 export const ExpenseRepositoryLive = Effect.succeed<ExpenseRepository>({
   create(data) {

@@ -14,7 +14,7 @@ export interface PurchaseRepository {
 }
 
 export const PurchaseRepository =
-  Context.Tag<"PurchaseRepository">("PurchaseRepository");
+  Context.GenericTag<PurchaseRepository>("PurchaseRepository");
 
 export const PurchaseRepositoryLive = Effect.succeed<PurchaseRepository>({
   list() {

@@ -7,6 +7,7 @@ import { UnknownException } from "effect/Cause";
 export type UserWithRoles = {
   id: string;
   email: string;
+  password: string;
   roles: string[];
 };
 
@@ -23,7 +24,7 @@ export interface UserRepository {
 }
 
 export const UserRepository =
-  Context.Tag<"UserRepository">("UserRepository");
+  Context.GenericTag<UserRepository>("UserRepository");
 
 export const UserRepositoryLive = Effect.succeed<UserRepository>({
   findByEmail(email) {
@@ -33,6 +34,7 @@ export const UserRepositoryLive = Effect.succeed<UserRepository>({
           id: users.id,
           email: users.email,
           role: userRoles.roleName,
+          password: users.passwordHash
         })
         .from(users)
         .leftJoin(userRoles, eq(users.id, userRoles.userId))
@@ -43,6 +45,7 @@ export const UserRepositoryLive = Effect.succeed<UserRepository>({
       return {
         id: rows[0].id,
         email: rows[0].email,
+        password: rows[0].password,
         roles: rows
           .map((r) => r.role)
           .filter((r): r is string => r !== null),

@@ -23,7 +23,7 @@ export interface EmployeeRepository {
 }
 
 export const EmployeeRepository =
-  Context.Tag<"EmployeeRepository">("EmployeeRepository");
+  Context.GenericTag<EmployeeRepository>("EmployeeRepository");
 
 export const EmployeeRepositoryLive = Effect.succeed<EmployeeRepository>({
   list() {

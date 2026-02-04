@@ -14,7 +14,7 @@ export interface CustomerRepository {
 }
 
 export const CustomerRepository =
-  Context.Tag<"CustomerRepository">("CustomerRepository");
+  Context.GenericTag<CustomerRepository>("CustomerRepository");
 
 export const CustomerRepositoryLive = Effect.succeed<CustomerRepository>({
   list() {
