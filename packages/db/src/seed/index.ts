@@ -1,3 +1,4 @@
+import { seedEmployees } from "./employees.seed";
 import { seedRoles } from "./roles.seed";
 import { seedAdminUser } from "./users.seed";
 // import { seedReferenceData } from "./reference.seed";
@@ -5,6 +6,7 @@ import { seedAdminUser } from "./users.seed";
 async function runSeed() {
   console.log("🌱 Seeding database...");
 
+  await seedEmployees();
   await seedRoles();
   await seedAdminUser();
   // await seedReferenceData();
