@@ -1,6 +1,12 @@
 # dependencies (bun install)
 node_modules
 
+# builds
+dist/
+build/
+.next/
+out/
+
 # output
 out
 dist
@@ -14,6 +20,10 @@ coverage
 logs
 _.log
 report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+
+# cache
+.turbo/
+.cache/
 
 # dotenv environment variable files
 .env
@@ -32,3 +42,8 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# editor
+.vscode/
+.idea/
+.cursor
