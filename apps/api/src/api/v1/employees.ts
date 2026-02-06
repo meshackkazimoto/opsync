@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { eq } from "drizzle-orm";
 import { employees } from "@opsync/db/schema";
-import { createEmployeeSchema, updateEmployeeSchema } from "@opsync/validation";
+import { createEmployeeSchema, updateEmployeeSchema, uuidSchema } from "@opsync/validation";
 import { db } from "../../db/client";
 import { success } from "../../http/response";
 import { NotFoundError, ValidationError } from "../../http/errors";
@@ -16,6 +16,14 @@ function parseBody<T>(schema: { safeParse: (input: unknown) => any }, input: unk
     throw new ValidationError("Validation failed", result.error.flatten());
   }
   return result.data as T;
+}
+
+function parseId(value: string) {
+  const parsed = uuidSchema.safeParse(value);
+  if (!parsed.success) {
+    throw new ValidationError("Invalid employee id", parsed.error.flatten());
+  }
+  return parsed.data;
 }
 
 export const employeeRoutes = new Hono<{ Variables: AuthVariables }>();
@@ -35,7 +43,8 @@ employeeRoutes.get(
   "/:id",
   requirePermission(Permissions.EMPLOYEE_READ),
   async (c) => {
-    const id = c.req.param("id");
+    const id = parseId(c.req.param("id"));
+    
     const rows = await db
       .select()
       .from(employees)
@@ -82,7 +91,7 @@ employeeRoutes.put(
   "/:id",
   requirePermission(Permissions.EMPLOYEE_WRITE),
   async (c) => {
-    const id = c.req.param("id");
+    const id = parseId(c.req.param("id"));
     const body = parseBody<{
       firstName?: string;
       lastName?: string;
@@ -112,7 +121,7 @@ employeeRoutes.delete(
   "/:id",
   requirePermission(Permissions.EMPLOYEE_WRITE),
   async (c) => {
-    const id = c.req.param("id");
+    const id = parseId(c.req.param("id"));
     const [deleted] = await db
       .delete(employees)
       .where(eq(employees.id, id))

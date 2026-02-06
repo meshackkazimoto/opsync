@@ -1,15 +1,27 @@
 import { Hono } from "hono";
 import { v1Routes } from "./api/v1";
-import { errorMiddleware } from "./middleware/error";
 import { requestLogger } from "./middleware/request-logger";
+import { AppError } from "./http/errors";
+import { error as errorResponse } from "./http/response";
+import { logger } from "@opsync/logger";
 import { healthHandler } from "./health";
+import { ContentfulStatusCode } from "hono/utils/http-status";
 
 const app = new Hono();
 
 app.use("*", requestLogger);
-app.use("*", errorMiddleware);
 
 app.get("/health", healthHandler);
 app.route("/api/v1", v1Routes);
+
+app.onError((err, c) => {
+  if (err instanceof AppError) {
+    logger.warn({ err }, "Request error");
+    return errorResponse(c, err.message, err.status as ContentfulStatusCode, err.code, err.details);
+  }
+
+  logger.error({ err }, "Unhandled error");
+  return errorResponse(c, "Internal Server Error", 500, "INTERNAL_ERROR");
+});
 
 export default app;
