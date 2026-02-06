@@ -10,6 +10,9 @@ import { leaves } from "./leaves";
 
 import { customers } from "./customers";
 import { invoices } from "./invoices";
+import { items } from "./items";
+import { invoiceItems } from "./invoice_items";
+import { payments } from "./payments";
 
 import { suppliers } from "./suppliers";
 import { purchases } from "./purchases";
@@ -23,6 +26,8 @@ import { auditLogs } from "./audit_logs";
 export const usersRelations = relations(users, ({ many }) => ({
   roles: many(userRoles),
   auditLogs: many(auditLogs),
+  items: many(items),
+  payments: many(payments),
 }));
 
 export const rolesRelations = relations(roles, ({ many }) => ({
@@ -63,10 +68,42 @@ export const customersRelations = relations(customers, ({ many }) => ({
   invoices: many(invoices),
 }));
 
-export const invoicesRelations = relations(invoices, ({ one }) => ({
+export const invoicesRelations = relations(invoices, ({ one, many }) => ({
   customer: one(customers, {
     fields: [invoices.customerId],
     references: [customers.id],
+  }),
+  items: many(invoiceItems),
+  payments: many(payments),
+}));
+
+export const itemsRelations = relations(items, ({ one, many }) => ({
+  createdByUser: one(users, {
+    fields: [items.createdBy],
+    references: [users.id],
+  }),
+  invoiceItems: many(invoiceItems),
+}));
+
+export const invoiceItemsRelations = relations(invoiceItems, ({ one }) => ({
+  invoice: one(invoices, {
+    fields: [invoiceItems.invoiceId],
+    references: [invoices.id],
+  }),
+  item: one(items, {
+    fields: [invoiceItems.itemId],
+    references: [items.id],
+  }),
+}));
+
+export const paymentsRelations = relations(payments, ({ one }) => ({
+  invoice: one(invoices, {
+    fields: [payments.invoiceId],
+    references: [invoices.id],
+  }),
+  createdByUser: one(users, {
+    fields: [payments.createdBy],
+    references: [users.id],
   }),
 }));
 

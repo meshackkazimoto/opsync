@@ -20,4 +20,8 @@ export * from "./audit_logs";
 
 export * from "./refresh_tokens";
 
+export * from "./invoice_items";
+export * from "./payments";
+export * from "./items";
+
 export * from "./relations";
