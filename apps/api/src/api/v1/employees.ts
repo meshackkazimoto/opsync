@@ -8,6 +8,7 @@ import { NotFoundError, ValidationError } from "../../http/errors";
 import { jwtMiddleware } from "../../middleware/jwt";
 import { requirePermission } from "../../middleware/permission";
 import { Permissions } from "@opsync/config";
+import type { AuthVariables } from "../../middleware/jwt";
 
 function parseBody<T>(schema: { safeParse: (input: unknown) => any }, input: unknown): T {
   const result = schema.safeParse(input);
@@ -17,7 +18,7 @@ function parseBody<T>(schema: { safeParse: (input: unknown) => any }, input: unk
   return result.data as T;
 }
 
-export const employeeRoutes = new Hono();
+export const employeeRoutes = new Hono<{ Variables: AuthVariables }>();
 
 employeeRoutes.use(jwtMiddleware);
 
@@ -61,7 +62,7 @@ employeeRoutes.post(
       phone?: string;
       position: string;
       department: string;
-      employmentDate?: Date;
+      employmentDate?: string;
       status?: "ACTIVE" | "INACTIVE";
     }>(createEmployeeSchema, await c.req.json());
 
@@ -89,7 +90,7 @@ employeeRoutes.put(
       phone?: string;
       position?: string;
       department?: string;
-      employmentDate?: Date;
+      employmentDate?: string;
       status?: "ACTIVE" | "INACTIVE";
     }>(updateEmployeeSchema, await c.req.json());
 

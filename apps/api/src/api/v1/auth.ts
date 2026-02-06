@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
+import type { Secret, SignOptions } from "jsonwebtoken";
 import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
 import { loginSchema, refreshSchema, logoutSchema } from "@opsync/validation";
@@ -85,14 +86,14 @@ authRoutes.post("/login", async (c) => {
 
   const permissions = permissionsForRoles(user.roles);
 
-  const accessToken = jwt.sign(
+  const accessToken = sign(
     {
       sub: user.id,
       roles: user.roles,
       permissions,
     },
-    config.JWT_SECRET,
-    { expiresIn: config.ACCESS_TOKEN_EXPIRES_IN }
+    config.JWT_SECRET as Secret,
+    { expiresIn: config.ACCESS_TOKEN_EXPIRES_IN as SignOptions["expiresIn"] }
   );
 
   const refreshToken = randomUUID();
@@ -143,14 +144,14 @@ authRoutes.post("/refresh", async (c) => {
   const roles = await getRolesForUser(record.userId);
   const permissions = permissionsForRoles(roles);
 
-  const accessToken = jwt.sign(
+  const accessToken = sign(
     {
       sub: record.userId,
       roles,
       permissions,
     },
-    config.JWT_SECRET,
-    { expiresIn: config.ACCESS_TOKEN_EXPIRES_IN }
+    config.JWT_SECRET as Secret,
+    { expiresIn: config.ACCESS_TOKEN_EXPIRES_IN as SignOptions["expiresIn"] }
   );
 
   logger.info({ userId: record.userId }, "Auth refresh success");

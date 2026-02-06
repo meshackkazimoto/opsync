@@ -2,6 +2,7 @@ import { createMiddleware } from "hono/factory";
 import { logger } from "@opsync/logger";
 import { AppError } from "../http/errors";
 import { error as errorResponse } from "../http/response";
+import type { ContentfulStatusCode } from "hono/utils/http-status";
 
 export const errorMiddleware = createMiddleware(async (c, next) => {
   try {
@@ -9,7 +10,7 @@ export const errorMiddleware = createMiddleware(async (c, next) => {
   } catch (err) {
     if (err instanceof AppError) {
       logger.warn({ err }, "Request error");
-      return errorResponse(c, err.message, err.status, err.code, err.details);
+      return errorResponse(c, err.message, err.status as ContentfulStatusCode, err.code, err.details);
     }
 
     logger.error({ err }, "Unhandled error");
