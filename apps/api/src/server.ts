@@ -1,8 +1,10 @@
-import { Hono } from "hono";
-import { v1Routes } from "./api/v1";
+import app from "./app";
+import { config } from "./config/env";
+import { logger } from "@opsync/logger";
 
-const app = new Hono();
+Bun.serve({
+  fetch: app.fetch,
+  port: config.PORT,
+});
 
-app.route("/api/v1", v1Routes);
-
-export default app;
+logger.info({ port: config.PORT }, "API server started");

@@ -1,0 +1,19 @@
+{
+  "name": "@opsync/logger",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@opsync/config": "workspace:*",
+    "pino": "^9.7.0"
+  }
+}

@@ -4,23 +4,27 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run --watch src/server.ts",
-    "start": "bun run src/server.ts",
+    "dev": "bun run src/server.ts",
     "build": "bun build src/server.ts --outdir dist",
-    "lint": "echo \"no lint yet\""
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/bcryptjs": "^3.0.0",
+    "@types/jsonwebtoken": "^9.0.10"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "@opsync/repositories": "workspace:*",
-    "@opsync/services": "workspace:*",
-    "@types/jsonwebtoken": "^9.0.10",
-    "effect": "^3.19.15",
+    "@opsync/config": "workspace:*",
+    "@opsync/db": "workspace:*",
+    "@opsync/logger": "workspace:*",
+    "@opsync/validation": "workspace:*",
+    "bcryptjs": "^3.0.3",
+    "drizzle-orm": "^0.45.1",
     "hono": "^4.11.7",
-    "jsonwebtoken": "^9.0.3"
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.18.0"
   }
 }

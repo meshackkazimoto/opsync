@@ -1,0 +1,10 @@
+{
+  "name": "@opsync/web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"web app not started yet\"",
+    "build": "echo \"no build\"",
+    "typecheck": "echo \"no typecheck\""
+  }
+}
