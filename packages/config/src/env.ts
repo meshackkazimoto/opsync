@@ -7,6 +7,8 @@ const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   ACCESS_TOKEN_EXPIRES_IN: z.string().min(1).default("15m"),
   REFRESH_TOKEN_DAYS: z.coerce.number().int().positive().default(14),
+  LOG_PRETTY: z.string().min(1),
+  LOG_LEVEL: z.string().min(1),
 });
 
 const parsed = envSchema.safeParse(process.env);
