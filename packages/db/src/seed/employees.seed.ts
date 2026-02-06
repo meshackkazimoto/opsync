@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { db } from "../index";
 import { employees, users } from "../schema";
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 
 export async function seedEmployees() {
   console.log("🌱 Seeding employees...");
@@ -65,13 +65,26 @@ export async function seedEmployees() {
     },
   ];
 
-  // 3️⃣ Insert employees
-  for (const employee of employeeData) {
-    await db
-      .insert(employees)
-      .values(employee)
-      .onConflictDoNothing();
+  const emails = employeeData.map((employee) => employee.email);
+  const existing = await db
+    .select({ email: employees.email })
+    .from(employees)
+    .where(inArray(employees.email, emails));
+
+  const existingEmails = new Set(
+    existing.map((row) => row.email).filter((email): email is string => !!email)
+  );
+
+  const toInsert = employeeData.filter(
+    (employee) => !existingEmails.has(employee.email)
+  );
+
+  if (toInsert.length === 0) {
+    console.log("✅ Employees already seeded");
+    return;
   }
+
+  await db.insert(employees).values(toInsert).onConflictDoNothing();
 
   console.log("✅ Employees seeded successfully");
 }

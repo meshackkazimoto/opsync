@@ -4,14 +4,17 @@ import { roles } from "src/schema";
 export async function seedRoles() {
   const data = [
     "ADMIN",
-     "HR" ,
-    "SALES" ,
+    "HR",
+    "SALES",
     "PROCUREMENT",
-    "VIEWER" 
+    "VIEWER",
   ];
 
-  await db.insert(roles)
-    .values(data as [])
+  const records = data.map((name) => ({ name }));
+
+  await db
+    .insert(roles)
+    .values(records)
     .onConflictDoNothing();
 
   console.log("✅ Roles seeded");

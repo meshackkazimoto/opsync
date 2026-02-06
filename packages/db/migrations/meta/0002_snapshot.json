@@ -1,0 +1,10 @@
+{
+  "id": "0002_add_employee_columns",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {},
+  "enums": {},
+  "schemas": {},
+  "roles": {},
+  "policy": {}
+}
