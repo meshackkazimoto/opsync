@@ -11,6 +11,7 @@ import { success } from "../../http/response";
 import { NotFoundError, ValidationError } from "../../http/errors";
 
 import { uuidSchema } from "@opsync/validation";
+import type { z } from "zod";
 import {
   createCustomerSchema,
   updateCustomerSchema,
@@ -23,10 +24,10 @@ import {
 
 import { customers, items, invoices, invoiceItems, payments } from "@opsync/db/schema";
 
-function parseBody<T>(schema: { safeParse: (input: unknown) => any }, input: unknown): T {
+function parseBody<T extends z.ZodTypeAny>(schema: T, input: unknown): z.infer<T> {
   const result = schema.safeParse(input);
   if (!result.success) throw new ValidationError("Validation failed", result.error.flatten());
-  return result.data as T;
+  return result.data;
 }
 
 function parseUuid(value: string, message: string) {
