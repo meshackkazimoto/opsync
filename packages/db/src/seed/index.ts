@@ -1,6 +1,9 @@
 import { seedEmployees } from "./employees.seed";
 import { seedRoles } from "./roles.seed";
 import { seedAdminUser } from "./users.seed";
+import { seedSales } from "./sales.seed";
+import { seedPurchasing } from "./purchasing.seed";
+import { seedExpenses } from "./expenses.seed";
 // import { seedReferenceData } from "./reference.seed";
 
 async function runSeed() {
@@ -9,6 +12,9 @@ async function runSeed() {
   await seedEmployees();
   await seedRoles();
   await seedAdminUser();
+  await seedSales();
+  await seedPurchasing();
+  await seedExpenses();
   // await seedReferenceData();
 
   console.log("✅ Database seeding complete");

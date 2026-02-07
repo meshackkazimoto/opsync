@@ -1,6 +1,10 @@
 import { z } from "zod";
+import { uuidSchema } from "./common";
 
 export const moneySchema = z.coerce.number().finite().nonnegative();
+const dateSchema = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD");
 
 export const createCustomerSchema = z.object({
   name: z.string().min(1),
@@ -21,20 +25,20 @@ export const createItemSchema = z.object({
 export const updateItemSchema = createItemSchema.partial();
 
 export const invoiceItemInputSchema = z.object({
-  itemId: z.string().uuid(),
+  itemId: uuidSchema,
   quantity: z.coerce.number().int().positive(),
   unitPrice: moneySchema.optional(),
 });
 
 export const createInvoiceSchema = z.object({
-  customerId: z.string().uuid(),
-  dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "dueDate must be YYYY-MM-DD").optional(),
+  customerId: uuidSchema,
+  dueDate: dateSchema.optional(),
   notes: z.string().optional(),
   items: z.array(invoiceItemInputSchema).min(1),
 });
 
 export const updateInvoiceSchema = z.object({
-  dueDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  dueDate: dateSchema.optional(),
   notes: z.string().optional(),
   items: z.array(invoiceItemInputSchema).min(1).optional(),
 });
@@ -42,6 +46,6 @@ export const updateInvoiceSchema = z.object({
 export const createPaymentSchema = z.object({
   amount: moneySchema.positive(),
   method: z.enum(["CASH", "BANK", "MOBILE_MONEY", "CARD"]).default("CASH"),
-  paidAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "paidAt must be YYYY-MM-DD").optional(),
+  paidAt: dateSchema.optional(),
   reference: z.string().optional(),
 });

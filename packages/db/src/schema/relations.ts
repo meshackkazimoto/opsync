@@ -16,8 +16,11 @@ import { payments } from "./payments";
 
 import { suppliers } from "./suppliers";
 import { purchases } from "./purchases";
+import { purchaseOrders } from "./purchase_orders";
+import { purchaseOrderItems } from "./purchase_order_items";
 
 import { expenses } from "./expenses";
+import { expenseCategories } from "./expense_categories";
 import { assets } from "./assets";
 
 import { documents } from "./documents";
@@ -109,12 +112,28 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
 
 export const suppliersRelations = relations(suppliers, ({ many }) => ({
   purchases: many(purchases),
+  purchaseOrders: many(purchaseOrders),
 }));
 
 export const purchasesRelations = relations(purchases, ({ one }) => ({
   supplier: one(suppliers, {
     fields: [purchases.supplierId],
     references: [suppliers.id],
+  }),
+}));
+
+export const purchaseOrdersRelations = relations(purchaseOrders, ({ one, many }) => ({
+  supplier: one(suppliers, {
+    fields: [purchaseOrders.supplierId],
+    references: [suppliers.id],
+  }),
+  items: many(purchaseOrderItems),
+}));
+
+export const purchaseOrderItemsRelations = relations(purchaseOrderItems, ({ one }) => ({
+  purchaseOrder: one(purchaseOrders, {
+    fields: [purchaseOrderItems.purchaseOrderId],
+    references: [purchaseOrders.id],
   }),
 }));
 
@@ -127,7 +146,15 @@ export const auditLogsRelations = relations(auditLogs, ({ one }) => ({
   }),
 }));
 
+export const expenseCategoriesRelations = relations(expenseCategories, ({ many }) => ({
+  expenses: many(expenses),
+}));
+
 export const expensesRelations = relations(expenses, ({ one }) => ({
+  category: one(expenseCategories, {
+    fields: [expenses.categoryId],
+    references: [expenseCategories.id],
+  }),
   createdByUser: one(users, {
     fields: [expenses.createdBy],
     references: [users.id],

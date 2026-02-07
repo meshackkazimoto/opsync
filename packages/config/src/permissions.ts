@@ -16,6 +16,16 @@ export const Permissions = {
   INVOICE_WRITE: "INVOICE_WRITE",
   PAYMENT_READ: "PAYMENT_READ",
   PAYMENT_WRITE: "PAYMENT_WRITE",
+
+  // purchasing
+  SUPPLIER_READ: "SUPPLIER_READ",
+  SUPPLIER_WRITE: "SUPPLIER_WRITE",
+  PURCHASE_ORDER_READ: "PURCHASE_ORDER_READ",
+  PURCHASE_ORDER_WRITE: "PURCHASE_ORDER_WRITE",
+
+  // expenses
+  EXPENSE_READ: "EXPENSE_READ",
+  EXPENSE_WRITE: "EXPENSE_WRITE",
 } as const;
 
 export type Permission = (typeof Permissions)[keyof typeof Permissions];

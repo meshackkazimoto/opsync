@@ -16,9 +16,9 @@ export const employeeStatusEnum = pgEnum("employee_status_enum", [
 export const invoiceStatusEnum = pgEnum("invoice_status_enum", [
   "DRAFT",
   "ISSUED",
+  "PARTIALLY_PAID",
   "PAID",
-  "PARTIAL",
-  "CANCELLED",
+  "VOID",
 ]);
 
 export const purchaseStatusEnum = pgEnum("purchase_status_enum", [
@@ -26,4 +26,18 @@ export const purchaseStatusEnum = pgEnum("purchase_status_enum", [
   "RECEIVED",
   "PAID",
   "CANCELLED",
+]);
+
+export const purchaseOrderStatusEnum = pgEnum("purchase_order_status_enum", [
+  "DRAFT",
+  "APPROVED",
+  "RECEIVED",
+  "CANCELLED",
+]);
+
+export const paymentMethodEnum = pgEnum("payment_method_enum", [
+  "CASH",
+  "BANK",
+  "MOBILE_MONEY",
+  "CARD",
 ]);
