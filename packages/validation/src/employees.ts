@@ -17,3 +17,17 @@ export const createEmployeeSchema = z.object({
 });
 
 export const updateEmployeeSchema = createEmployeeSchema.partial();
+
+export const createDepartmentSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().optional(),
+});
+
+export const updateDepartmentSchema = createDepartmentSchema.partial();
+
+export const createEmployeeRoleSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().optional(),
+});
+
+export const updateEmployeeRoleSchema = createEmployeeRoleSchema.partial();

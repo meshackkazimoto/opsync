@@ -5,6 +5,8 @@ export * from "./user_roles";
 export * from "./employees";
 export * from "./attendance";
 export * from "./leaves";
+export * from "./departments";
+export * from "./employee_roles";
 
 export * from "./customers";
 export * from "./items";

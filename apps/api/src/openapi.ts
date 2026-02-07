@@ -131,6 +131,64 @@ export const openApiSpec = {
         responses: { "200": { description: "OK" } },
       },
     },
+    "/api/v1/departments": {
+      get: {
+        tags: ["Employees"],
+        summary: "List departments",
+        parameters: [{ name: "q", in: "query", schema: { type: "string" } }],
+        responses: { "200": { description: "OK" } },
+      },
+      post: {
+        tags: ["Employees"],
+        summary: "Create department",
+        requestBody: { required: true, content: { "application/json": { schema: { type: "object" } } } },
+        responses: { "201": { description: "Created" } },
+      },
+    },
+    "/api/v1/departments/{id}": {
+      put: {
+        tags: ["Employees"],
+        summary: "Update department",
+        parameters: [{ name: "id", in: "path", required: true, schema: { type: "string", format: "uuid" } }],
+        requestBody: { required: true, content: { "application/json": { schema: { type: "object" } } } },
+        responses: { "200": { description: "OK" } },
+      },
+      delete: {
+        tags: ["Employees"],
+        summary: "Delete department",
+        parameters: [{ name: "id", in: "path", required: true, schema: { type: "string", format: "uuid" } }],
+        responses: { "200": { description: "OK" } },
+      },
+    },
+    "/api/v1/employee-roles": {
+      get: {
+        tags: ["Employees"],
+        summary: "List employee roles",
+        parameters: [{ name: "q", in: "query", schema: { type: "string" } }],
+        responses: { "200": { description: "OK" } },
+      },
+      post: {
+        tags: ["Employees"],
+        summary: "Create employee role",
+        requestBody: { required: true, content: { "application/json": { schema: { type: "object" } } } },
+        responses: { "201": { description: "Created" } },
+      },
+    },
+    "/api/v1/employee-roles/{id}": {
+      put: {
+        tags: ["Employees"],
+        summary: "Update employee role",
+        parameters: [{ name: "id", in: "path", required: true, schema: { type: "string", format: "uuid" } }],
+        requestBody: { required: true, content: { "application/json": { schema: { type: "object" } } } },
+        responses: { "200": { description: "OK" } },
+      },
+      delete: {
+        tags: ["Employees"],
+        summary: "Delete employee role",
+        parameters: [{ name: "id", in: "path", required: true, schema: { type: "string", format: "uuid" } }],
+        responses: { "200": { description: "OK" } },
+      },
+    },
     "/api/v1/sales/customers": {
       get: {
         tags: ["Sales"],

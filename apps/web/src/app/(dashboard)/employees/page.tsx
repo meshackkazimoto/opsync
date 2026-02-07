@@ -51,7 +51,17 @@ export default function EmployeesPage() {
       <PageHeader
         title="Employees"
         subtitle="Manage people records"
-        actions={<Button onClick={() => router.push("/employees/new")}>New Employee</Button>}
+        actions={
+          <div className="flex gap-2">
+            <Button variant="ghost" onClick={() => router.push("/employees/roles")}>
+              Roles
+            </Button>
+            <Button variant="ghost" onClick={() => router.push("/employees/departments")}>
+              Departments
+            </Button>
+            <Button onClick={() => router.push("/employees/new")}>New Employee</Button>
+          </div>
+        }
       />
 
       <Card>

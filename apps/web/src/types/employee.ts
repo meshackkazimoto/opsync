@@ -1,4 +1,4 @@
-export type EmployeeStatus = "active" | "inactive" | "on_leave";
+export type EmployeeStatus = "ACTIVE" | "INACTIVE" | "ON_LEAVE";
 
 export type Employee = {
   id: string;

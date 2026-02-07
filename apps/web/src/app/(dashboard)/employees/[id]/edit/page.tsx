@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { useEmployee, useUpdateEmployee } from "@/services/employee-service";
 import { useEffect } from "react";
 import { useToast } from "@/components/ui/toast";
+import { useEmployeeRolesList } from "@/services/employee-role-service";
+import { useDepartmentsList } from "@/services/department-service";
 
 export default function EditEmployeePage() {
   const params = useParams();
@@ -20,6 +22,8 @@ export default function EditEmployeePage() {
   const { notify } = useToast();
   const { data } = useEmployee(id);
   const updateEmployee = useUpdateEmployee(id);
+  const { data: roles } = useEmployeeRolesList();
+  const { data: departments } = useDepartmentsList();
 
   const {
     register,
@@ -69,8 +73,22 @@ export default function EditEmployeePage() {
           <Input label="First name" error={errors.firstName?.message} {...register("firstName")} />
           <Input label="Last name" error={errors.lastName?.message} {...register("lastName")} />
           <Input label="Email" type="email" error={errors.email?.message} {...register("email")} />
-          <Input label="Role" error={errors.role?.message} {...register("role")} />
-          <Input label="Department" error={errors.department?.message} {...register("department")} />
+          <Select label="Role" error={errors.role?.message} {...register("role")}>
+            <option value="">Select role</option>
+            {roles?.map((role) => (
+              <option key={role.id} value={role.name}>
+                {role.name}
+              </option>
+            ))}
+          </Select>
+          <Select label="Department" error={errors.department?.message} {...register("department")}>
+            <option value="">Select department</option>
+            {departments?.map((department) => (
+              <option key={department.id} value={department.name}>
+                {department.name}
+              </option>
+            ))}
+          </Select>
           <Select label="Status" error={errors.status?.message} {...register("status")}>
             <option value="active">Active</option>
             <option value="on_leave">On Leave</option>
