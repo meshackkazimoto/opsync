@@ -8,9 +8,17 @@ import { healthHandler } from "./health";
 import { ContentfulStatusCode } from "hono/utils/http-status";
 import { swaggerUI } from "@hono/swagger-ui";
 import { openApiSpec } from "./openapi";
+import { cors } from "hono/cors";
 
 const app = new Hono();
 
+app.use(
+  "*",
+  cors({
+    origin: ["http://localhost:8000"],
+    credentials: true,
+  })
+);
 app.use("*", requestLogger);
 
 app.get("/health", healthHandler);
