@@ -25,6 +25,7 @@
     "bcryptjs": "^3.0.3",
     "drizzle-orm": "^0.45.1",
     "hono": "^4.11.7",
+    "@hono/swagger-ui": "^0.5.2",
     "jsonwebtoken": "^9.0.3",
     "pg": "^8.18.0",
     "zod": "^4.3.6"
