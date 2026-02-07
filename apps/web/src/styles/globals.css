@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-border: #d9dde3;
+  --color-text: #0b111a;
+  --color-muted: #5f6c7b;
+  --color-primary: #1c3d63;
+  --color-primary-foreground: #f8fafc;
+  --color-secondary: #1e6b63;
+  --color-secondary-foreground: #e9f5f3;
+  --color-danger: #8f1f2f;
+  --color-danger-foreground: #fdeef0;
+  color-scheme: light;
+}
+
+.dark {
+  --color-bg: #0b0f14;
+  --color-surface: #111822;
+  --color-border: #263042;
+  --color-text: #e5e7eb;
+  --color-muted: #9aa6b2;
+  --color-primary: #3b6fa6;
+  --color-primary-foreground: #f1f5f9;
+  --color-secondary: #2b8f86;
+  --color-secondary-foreground: #e8f6f4;
+  --color-danger: #c14457;
+  --color-danger-foreground: #fff1f2;
+  color-scheme: dark;
+}
+
+* {
+  border-radius: 0 !important;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body, "IBM Plex Sans", sans-serif);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display, "Space Grotesk", sans-serif);
+  letter-spacing: -0.01em;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(28, 61, 99, 0.2);
+}
