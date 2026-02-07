@@ -3,6 +3,7 @@ export const openApiSpec = {
   info: {
     title: "Opsync API",
     version: "1.0.0",
+    description: "API documentation for Opsync",
   },
   servers: [
     { url: "http://localhost:5055" },
